@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - develop
+  workflow_dispatch:  # 手動実行を有効化
 
 jobs:
   # テストとビルドの検証のみ（プルリクエスト時）
