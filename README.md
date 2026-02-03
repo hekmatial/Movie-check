@@ -106,10 +106,22 @@ npm run build
 
 ### Vercelへのデプロイ
 
+#### 方法1: Vercelの自動デプロイ（推奨・簡単）
+
 1. [Vercel](https://vercel.com)にアカウントを作成
 2. GitHubリポジトリをVercelに接続
 3. 環境変数 `GEMINI_API_KEY` を設定（Vercelダッシュボード > Settings > Environment Variables）
 4. デプロイが自動的に開始されます
+
+#### 方法2: GitHub Actionsを使用（CI/CD）
+
+GitHub Actionsを使ってCI/CDパイプラインを設定する場合：
+
+1. 詳細な手順は [CI_CD_SETUP.md](.github/CI_CD_SETUP.md) を参照してください
+2. 主な手順：
+   - Vercel Token、Organization ID、Project IDを取得
+   - GitHub Secretsに設定
+   - `main`ブランチにプッシュすると自動的にデプロイされます
 
 ### ローカル開発
 
