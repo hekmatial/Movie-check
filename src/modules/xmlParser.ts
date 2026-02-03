@@ -1,5 +1,5 @@
 import { parseString } from 'xml2js';
-import { ClipInfo, TimelineInfo, CheckError } from '../types';
+import type { ClipInfo, TimelineInfo, CheckError } from '../types';
 import { timecodeDiff, timecodeToSeconds } from '../utils/timecode';
 
 /**

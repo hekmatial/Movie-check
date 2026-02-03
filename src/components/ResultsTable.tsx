@@ -1,4 +1,4 @@
-import { CheckError } from '../types';
+import type { CheckError } from '../types';
 
 interface ResultsTableProps {
   errors: CheckError[];

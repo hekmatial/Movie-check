@@ -1,4 +1,4 @@
-import { CheckError, TimelineInfo } from '../types';
+import type { CheckError, TimelineInfo } from '../types';
 import { secondsToTimecode } from '../utils/timecode';
 
 /**
@@ -7,11 +7,12 @@ import { secondsToTimecode } from '../utils/timecode';
  */
 
 // ffmpeg.wasmは動的に読み込む（将来的に使用）
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-async function initFFmpeg(): Promise<void> {
-  // 将来的にffmpeg.wasmを使用する場合の実装
-  // 現在はブラウザのVideo APIを使用
-}
+// 現在はブラウザのVideo APIを使用
+// 将来的にffmpeg.wasmを使用する場合は、以下の関数を実装:
+// async function initFFmpeg(): Promise<void> {
+//   const { FFmpeg } = await import('@ffmpeg/ffmpeg');
+//   // ...
+// }
 
 /**
  * 動画ファイルからフレームを抽出して解析
@@ -103,7 +104,8 @@ function calculateBrightness(imageData: ImageData): number {
  */
 export async function detectFlashFrames(
   videoFile: File,
-  timeline: TimelineInfo,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _timeline: TimelineInfo,
   threshold: number = 0.1 // 輝度の閾値（0.1以下を黒と判定）
 ): Promise<CheckError[]> {
   const errors: CheckError[] = [];

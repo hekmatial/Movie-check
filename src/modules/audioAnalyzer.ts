@@ -1,4 +1,4 @@
-import { CheckError, AudioLevel } from '../types';
+import type { CheckError, AudioLevel } from '../types';
 import { secondsToTimecode, timecodeToSeconds } from '../utils/timecode';
 
 /**

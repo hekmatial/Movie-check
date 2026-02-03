@@ -1,4 +1,4 @@
-import { TextEntry, CheckError } from '../types';
+import type { TextEntry, CheckError } from '../types';
 
 /**
  * タイムコード付きテキストファイルをパース

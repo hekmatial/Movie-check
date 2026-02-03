@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { FileUpload } from './components/FileUpload';
 import { ProgressBar } from './components/ProgressBar';
 import { ResultsTable } from './components/ResultsTable';
-import { CheckError } from './types';
+import type { CheckError } from './types';
 import { parsePremiereXML, detectGaps } from './modules/xmlParser';
 import { detectFlashFrames } from './modules/videoAnalyzer';
 import { checkAudioLevels } from './modules/audioAnalyzer';

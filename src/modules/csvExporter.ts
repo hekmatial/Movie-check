@@ -1,5 +1,5 @@
 import Papa from 'papaparse';
-import { CheckError } from '../types';
+import type { CheckError } from '../types';
 
 /**
  * チェックエラーをCSV形式でエクスポート
@@ -17,7 +17,6 @@ export function exportToCSV(errors: CheckError[]): void {
   // CSV文字列を生成
   const csv = Papa.unparse(csvData, {
     header: true,
-    encoding: 'UTF-8',
   });
 
   // BOMを追加（Excelで正しく表示されるように）
