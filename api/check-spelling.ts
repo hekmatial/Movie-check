@@ -47,15 +47,27 @@ export default async function handler(
     }> = [];
 
     // テキストをバッチでチェック（API呼び出し回数を減らす）
+    interface TextEntry {
+      timecode: string;
+      text: string;
+    }
+    
+    interface SpellCheckItem {
+      index: number;
+      original: string;
+      error: string;
+      suggestion: string;
+    }
+
     const batchSize = 5;
     for (let i = 0; i < textEntries.length; i += batchSize) {
-      const batch = textEntries.slice(i, i + batchSize);
+      const batch = textEntries.slice(i, i + batchSize) as TextEntry[];
 
       try {
         const prompt = `以下のテキストの誤字脱字をチェックしてください。誤字脱字がある場合は、該当するテキストと修正案を指摘してください。
 
 テキスト:
-${batch.map((entry: any, idx: number) => `${idx + 1}. [${entry.timecode}] ${entry.text}`).join('\n')}
+${batch.map((entry: TextEntry, idx: number) => `${idx + 1}. [${entry.timecode}] ${entry.text}`).join('\n')}
 
 JSON形式で回答してください。誤字脱字がない場合は空配列を返してください。
 形式: [{"index": 数値, "original": "元のテキスト", "error": "誤字脱字の内容", "suggestion": "修正案"}]`;
@@ -67,9 +79,9 @@ JSON形式で回答してください。誤字脱字がない場合は空配列�
         const jsonMatch = responseText.match(/```json\s*([\s\S]*?)\s*```/) || responseText.match(/\[[\s\S]*\]/);
         if (jsonMatch) {
           try {
-            const parsed = JSON.parse(jsonMatch[1] || jsonMatch[0]);
+            const parsed = JSON.parse(jsonMatch[1] || jsonMatch[0]) as SpellCheckItem[];
             if (Array.isArray(parsed)) {
-              parsed.forEach((item: any) => {
+              parsed.forEach((item: SpellCheckItem) => {
                 const entryIndex = item.index - 1;
                 if (entryIndex >= 0 && entryIndex < batch.length) {
                   const entry = batch[entryIndex];

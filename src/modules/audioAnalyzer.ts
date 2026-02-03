@@ -8,6 +8,7 @@ import { secondsToTimecode, timecodeToSeconds } from '../utils/timecode';
 
 // ffmpeg.wasmは動的に読み込む
 let ffmpegLoaded = false;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let ffmpeg: any = null;
 
 /**
@@ -18,7 +19,6 @@ async function initFFmpeg(): Promise<void> {
 
   try {
     const { FFmpeg } = await import('@ffmpeg/ffmpeg');
-    const { fetchFile } = await import('@ffmpeg/util');
     ffmpeg = new FFmpeg();
     ffmpeg.on('log', ({ message }: { message: string }) => {
       console.log(message);
@@ -37,15 +37,17 @@ async function initFFmpeg(): Promise<void> {
 async function extractAudioFromVideo(videoFile: File): Promise<AudioBuffer> {
   await initFFmpeg();
   const { fetchFile } = await import('@ffmpeg/util');
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const ffmpegAny = ffmpeg as any;
 
   const inputFileName = 'input.mp4';
   const outputFileName = 'output.wav';
 
   // 動画ファイルをメモリに読み込む
-  await ffmpeg.writeFile(inputFileName, await fetchFile(videoFile));
+  await ffmpegAny.writeFile(inputFileName, await fetchFile(videoFile));
 
   // 音声を抽出
-  await ffmpeg.exec([
+  await ffmpegAny.exec([
     '-i', inputFileName,
     '-vn', // ビデオストリームを無視
     '-acodec', 'pcm_s16le', // PCM形式で出力
@@ -55,11 +57,12 @@ async function extractAudioFromVideo(videoFile: File): Promise<AudioBuffer> {
   ]);
 
   // 抽出した音声ファイルを取得
-  const data = await ffmpeg.readFile(outputFileName);
+  const data = await ffmpegAny.readFile(outputFileName);
   const audioBlob = new Blob([data], { type: 'audio/wav' });
   const arrayBuffer = await audioBlob.arrayBuffer();
 
   // AudioBufferに変換
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
   return await audioContext.decodeAudioData(arrayBuffer);
 }
@@ -191,6 +194,7 @@ async function extractAudioFromVideoElement(videoFile: File): Promise<AudioBuffe
     video.muted = false;
     video.volume = 1.0;
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
     const source = audioContext.createMediaElementSource(video);
     const analyser = audioContext.createAnalyser();
@@ -199,7 +203,6 @@ async function extractAudioFromVideoElement(videoFile: File): Promise<AudioBuffe
 
     // 音声データを収集
     const bufferSize = 4096;
-    const audioBuffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
     const dataArray = new Float32Array(bufferSize);
 
     video.onloadedmetadata = () => {

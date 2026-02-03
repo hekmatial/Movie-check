@@ -15,7 +15,8 @@ export interface TimecodeParts {
  * @param timecode HH:MM:SS:FF形式の文字列
  * @param fps フレームレート（デフォルト: 30）
  */
-export function parseTimecode(timecode: string, fps: number = 30): TimecodeParts | null {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function parseTimecode(timecode: string, _fps: number = 30): TimecodeParts | null {
   const parts = timecode.split(':');
   if (parts.length !== 4) return null;
 

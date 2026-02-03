@@ -1,5 +1,4 @@
 import { CheckError } from '../types';
-import { exportToCSV } from '../modules/csvExporter';
 
 interface ResultsTableProps {
   errors: CheckError[];

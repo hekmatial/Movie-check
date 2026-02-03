@@ -1,34 +1,16 @@
 import { CheckError, TimelineInfo } from '../types';
-import { timecodeToSeconds, secondsToTimecode } from '../utils/timecode';
+import { secondsToTimecode } from '../utils/timecode';
 
 /**
  * 動画解析モジュール
  * フラッシュフレーム（一瞬の黒画面）を検知
  */
 
-// ffmpeg.wasmは動的に読み込む
-let ffmpegLoaded = false;
-let ffmpeg: any = null;
-
-/**
- * ffmpeg.wasmを初期化
- */
+// ffmpeg.wasmは動的に読み込む（将来的に使用）
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function initFFmpeg(): Promise<void> {
-  if (ffmpegLoaded) return;
-
-  try {
-    const { FFmpeg } = await import('@ffmpeg/ffmpeg');
-    const { fetchFile } = await import('@ffmpeg/util');
-    ffmpeg = new FFmpeg();
-    ffmpeg.on('log', ({ message }: { message: string }) => {
-      console.log(message);
-    });
-    await ffmpeg.load();
-    ffmpegLoaded = true;
-  } catch (error) {
-    console.error('ffmpeg.wasmの読み込みに失敗しました:', error);
-    throw new Error('動画解析機能を使用するにはffmpeg.wasmが必要です');
-  }
+  // 将来的にffmpeg.wasmを使用する場合の実装
+  // 現在はブラウザのVideo APIを使用
 }
 
 /**
@@ -180,8 +162,10 @@ export async function detectFlashFrames(
  * クリップ間のギャップを動画から検証
  */
 export async function verifyGapsFromVideo(
-  videoFile: File,
-  timeline: TimelineInfo
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _videoFile: File,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _timeline: TimelineInfo
 ): Promise<CheckError[]> {
   // XMLパーサーで検出したギャップを動画データで検証する機能
   // 実装は必要に応じて追加

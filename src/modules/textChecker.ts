@@ -61,8 +61,15 @@ export async function checkSpelling(
     const data = await response.json();
     
     // バックエンドから返されたエラーをCheckError形式に変換
+    interface ApiErrorItem {
+      original: string;
+      error: string;
+      suggestion: string;
+      timecode: string;
+    }
+    
     if (data.errors && Array.isArray(data.errors)) {
-      data.errors.forEach((item: any) => {
+      (data.errors as ApiErrorItem[]).forEach((item: ApiErrorItem) => {
         errors.push({
           source: 'txt',
           type: 'spell',

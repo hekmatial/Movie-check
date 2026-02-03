@@ -22,7 +22,13 @@ export async function parsePremiereXML(xmlContent: string): Promise<TimelineInfo
         const track = video?.track?.[0];
 
         if (track?.clipitem) {
-          track.clipitem.forEach((clip: any) => {
+          interface ClipItem {
+            start?: string[];
+            end?: string[];
+            name?: string[];
+            file?: Array<{ name?: string[] }>;
+          }
+          (track.clipitem as ClipItem[]).forEach((clip: ClipItem) => {
             const start = clip.start?.[0];
             const end = clip.end?.[0];
             const name = clip.name?.[0] || clip.file?.[0]?.name?.[0] || 'Unknown';
